@@ -1,7 +1,7 @@
 #pragma once
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
-
+#include <string>
 //  Macros
 
 #define ESUTIL_API  __cdecl
@@ -123,7 +123,7 @@ void ESUTIL_API esLogMessage ( const char *formatStr, ... );
 /// \param shaderSrc Shader source string
 /// \return A new shader object on success, 0 on failure
 //
-GLuint ESUTIL_API esLoadShader ( GLenum type, char * filename);
+GLuint ESUTIL_API esLoadShader ( GLenum type, const std::string& filename);
 
 //
 ///

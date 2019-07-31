@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string>
 #include "targetver.h"
 
 #ifndef ANDROID
@@ -24,9 +24,9 @@
 /// \return A new shader object on success, 0 on failure
 //
 #ifndef ANDROID
-GLuint ESUTIL_API esLoadShader ( GLenum type, char * filename )
+GLuint ESUTIL_API esLoadShader ( GLenum type, const std::string& filename )
 #else
-GLuint esLoadShader ( GLenum type, char * filename )
+GLuint esLoadShader ( GLenum type, const std::string& filename )
 #endif //android
 {
 	GLuint shader;
@@ -41,7 +41,7 @@ GLuint esLoadShader ( GLenum type, char * filename )
 	// Load the shader source
 #ifndef ANDROID
 	FILE * pf;
-	if (fopen_s(&pf, filename, "rb" ) != 0)
+	if (fopen_s(&pf, filename.c_str(), "rb" ) != 0)
 		return NULL;
 
 #else

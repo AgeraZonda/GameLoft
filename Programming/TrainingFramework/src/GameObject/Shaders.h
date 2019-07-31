@@ -16,12 +16,12 @@ public:
 	GLuint		program;
 	GLint		iTextureLoc[5];
 
-	GLint		Init(char * fileVertexShader, char * fileFragmentShader);
-	void		EnableTest(GLuint);
+	GLint		Init(const std::string& fileVertexShader, const std::string& fileFragmentShader);
+	void		EnableTest(GLuint gl_test);
 	void		EnableAlpha();
 
-	void		SetShaderID(GLuint);
+	void		SetShaderID(GLuint id);
 	GLuint		GetShaderID();
-	GLuint		GetAttribLocation(char *str);
-	GLuint		GetUniformLocation(char *str);
+	GLuint		GetAttribLocation(const std::string& str);
+	GLuint		GetUniformLocation(const std::string& str);
 };

@@ -1,7 +1,10 @@
 #pragma once
 
+#include <string>
 #include "targetver.h"
 #include "U_Math.h"
+#include "ft2build.h"
+#include FT_FREETYPE_H
 
 #ifndef _WIN32_WINNT            // Specifies that the minimum required platform is Windows Vista.
 #define _WIN32_WINNT 0x0600     // Change this to the appropriate value to target other versions of Windows.
@@ -18,16 +21,6 @@
 // define value
 #define PI 3.14f
 #define MAX_DEGREE 360
-#define WAIT_TIME 0.9f	
-#define MAX_ROW  12
-#define MAX_COL 26
-
-#define PIECE_BLOCKS 5	
-#define ZOOM_OBJ 1
-
-#define COLUMN 2*PI/MAX_COL
-#define RADIUS 7.0f
-
 // define vetex 
 #define VETEX_POSITION			(char*)0
 #define VETEX_NORM				(char*)0+(sizeof(Vector3))
@@ -39,11 +32,6 @@
 #define NONE					111 
 #define RAW						222 
 #define NFG						333
-#define GAME_3D_SPRITE			444
-#define GAME_2D_SPRITE			555
-#define HEIGHT_MAP_SCALE		10.0f
-#define HEIGHT_MAP_SCALE_TEXT	25.0f
-#define HEIGHT_MAP_SCALE_SIZE	2.0f
 
 #ifdef WIN32
 

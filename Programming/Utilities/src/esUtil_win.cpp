@@ -54,7 +54,7 @@ LRESULT WINAPI ESWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		POINT      point;
 		GetCursorPos(&point);
 		if (esContext && esContext->mouseFunc)
-			esContext->mouseFunc(esContext, (int)point.x - WDpoint.x + 5, (int)point.y - WDpoint.y + 25, false);
+			esContext->mouseFunc(esContext, (int)point.x - WDpoint.x , (int)point.y - WDpoint.y , false);
 	}
 	break;
 	case WM_LBUTTONDOWN:
@@ -63,7 +63,7 @@ LRESULT WINAPI ESWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		POINT      point;
 		GetCursorPos(&point);
 		if (esContext && esContext->mouseFunc)
-			esContext->mouseFunc(esContext, (int)point.x - WDpoint.x + 5, (int)point.y - WDpoint.y + 25, true);
+			esContext->mouseFunc(esContext, (int)point.x - WDpoint.x , (int)point.y - WDpoint.y , true);
 
 	}
 	break;

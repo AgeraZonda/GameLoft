@@ -16,7 +16,7 @@ Shaders::~Shaders()
 	glDeleteShader (fragmentShader);
 }
 
-GLint Shaders::Init(char * fileVertexShader, char * fileFragmentShader)
+GLint Shaders::Init(const std::string& fileVertexShader, const std::string& fileFragmentShader)
 {
 	LOGI("Compile Shader:%s\t%s\t\t\n",fileVertexShader,fileFragmentShader);
 	vertexShader = esLoadShader(GL_VERTEX_SHADER, fileVertexShader);
@@ -45,14 +45,14 @@ GLint Shaders::Init(char * fileVertexShader, char * fileFragmentShader)
 	return 0;
 }
 
-GLuint Shaders::GetAttribLocation(char *str)
+GLuint Shaders::GetAttribLocation(const std::string& str)
 {
-	return glGetAttribLocation(program,str);
+	return glGetAttribLocation(program,str.c_str());
 }
 
-GLuint Shaders::GetUniformLocation(char *str)
+GLuint Shaders::GetUniformLocation(const std::string& str)
 {
-	return glGetUniformLocation(program,str);
+	return glGetUniformLocation(program,str.c_str());
 }
 
 void Shaders::SetShaderID(GLuint id)
@@ -63,9 +63,9 @@ GLuint Shaders::GetShaderID()
 {
 	return m_iShaderID;
 }
-void Shaders::EnableTest(GLuint GL_TEST)
+void Shaders::EnableTest(GLuint gl_test)
 {
-	//glEnable(GL_TEST);
+	glEnable(gl_test);
 }
 void Shaders::EnableAlpha(){
 	glEnable(GL_BLEND);

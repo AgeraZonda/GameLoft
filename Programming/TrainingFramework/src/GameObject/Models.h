@@ -1,5 +1,14 @@
 #pragma once
-#include "Vertex.h"
+#include "GameConfig.h"
+
+struct Vertex
+{
+	Vector3 position;
+	Vector3 normal;
+	Vector3 bitangent;
+	Vector3 tangent;
+	Vector2 uv;
+};
 
 class Models
 {
@@ -8,13 +17,12 @@ private:
 	GLuint		m_iNumIndices;
 	GLuint		m_iVboID; 
 	GLuint		m_iIboID;
-	void		Filter(unsigned char * pBuffer, GLint range);
 public:
-	int			Init(const char *szFileName, GLuint type);
-	int			Init(GLuint type);
+	Models(const std::string& fileName, GLuint type);
+	~Models();
 	GLuint		GetVertexObject();
 	GLuint		GetIndiceObject();
 	GLuint		GetNumIndiceObject();
-	void		SetModelId(GLuint);
+	void		SetModelId(GLuint id);
 	GLuint		GetModelId();
 };

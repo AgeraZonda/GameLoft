@@ -9,4 +9,9 @@
 #include "GameConfig.h"
 #include "Singleton.h"
 #include <list>
+#include <vector>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 #include <string>
+#include <memory>

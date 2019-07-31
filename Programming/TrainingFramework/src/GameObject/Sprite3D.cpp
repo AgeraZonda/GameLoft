@@ -9,18 +9,18 @@ void Sprite3D::CaculateWorldMatrix()
 {
 	Matrix m_Sc, m_Rx, m_Ry, m_Rz, m_T;
 	m_Sc.SetScale(m_Vec3Scale);
-	GLfloat tempX = (GLfloat)(m_Vec3Rotation.x*PI * 2 / MAX_DEGREE);
+	GLfloat tempX = (GLfloat)(m_Vec3Rotation.x * PI * 2 / MAX_DEGREE);
 	m_Rx.SetRotationX(tempX);
-	GLfloat tempY = (GLfloat)(m_Vec3Rotation.y*PI * 2 / MAX_DEGREE);
+	GLfloat tempY = (GLfloat)(m_Vec3Rotation.y * PI * 2 / MAX_DEGREE);
 	m_Ry.SetRotationY(tempY);
-	GLfloat tempZ = (GLfloat)(m_Vec3Rotation.z*PI * 2 / MAX_DEGREE);
+	GLfloat tempZ = (GLfloat)(m_Vec3Rotation.z * PI * 2 / MAX_DEGREE);
 	m_Rz.SetRotationZ(tempZ);
 	m_T.SetTranslation(m_Vec3Position);
 
-	m_WorldMat = m_Sc*m_Rz*m_Rx*m_Ry*m_T;
+	m_WorldMat = m_Sc * m_Rz * m_Rx * m_Ry * m_T;
 }
 
-Sprite3D::Sprite3D(Models * model, Shaders * shader, Camera* camera, Texture * texture)
+Sprite3D::Sprite3D(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Camera> camera, std::shared_ptr<Texture> texture)
 	: BaseObject()
 {
 	m_pModel = model;
@@ -29,7 +29,7 @@ Sprite3D::Sprite3D(Models * model, Shaders * shader, Camera* camera, Texture * t
 	m_pTexture = texture;
 }
 
-Sprite3D::Sprite3D(Models * model, Shaders * shader, Camera* camera, Vector4 color)
+Sprite3D::Sprite3D(std::shared_ptr<Models> model, std::shared_ptr<Shaders> shader, std::shared_ptr<Camera> camera, Vector4 color)
 	: BaseObject()
 {
 	m_pModel = model;
@@ -46,7 +46,7 @@ Sprite3D::~Sprite3D(void)
 
 void Sprite3D::Init()
 {
-	
+
 	CaculateWorldMatrix();
 }
 
@@ -57,9 +57,11 @@ void Sprite3D::Draw()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pModel->GetIndiceObject());
 	GLuint iTempShaderVaribleGLID = -1;
 	Matrix matrixWVP;
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 	// All object
-	matrixWVP = m_WorldMat* m_pCamera->GetLookAtCamera();
+	matrixWVP = m_WorldMat * m_pCamera->GetLookAtCamera();
 
 	if (m_pTexture != nullptr)
 	{
@@ -110,6 +112,8 @@ void Sprite3D::Draw()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
 }
 
 void Sprite3D::Update(GLfloat deltatime)
@@ -118,13 +122,13 @@ void Sprite3D::Update(GLfloat deltatime)
 }
 
 
-void Sprite3D::Set3DPosition(Vector3 pos) 
-{ 
-	m_Vec3Position = pos; 
+void Sprite3D::Set3DPosition(Vector3 pos)
+{
+	m_Vec3Position = pos;
 	CaculateWorldMatrix();
 }
-Vector3 Sprite3D::Get3DPosition() 
-{ 
+Vector3 Sprite3D::Get3DPosition()
+{
 	return m_Vec3Position;
 }
 
@@ -133,17 +137,17 @@ void Sprite3D::Set3DScale(Vector3 sca)
 	m_Vec3Scale = sca;
 	CaculateWorldMatrix();
 }
-Vector3 Sprite3D::Get3DScale() 
-{ 
-	return m_Vec3Scale; 
+Vector3 Sprite3D::Get3DScale()
+{
+	return m_Vec3Scale;
 }
 
-void Sprite3D::Set3DRotation(Vector3 ros) 
-{ 
-	m_Vec3Rotation = ros; 
+void Sprite3D::Set3DRotation(Vector3 ros)
+{
+	m_Vec3Rotation = ros;
 	CaculateWorldMatrix();
 }
 Vector3 Sprite3D::Get3DRotation()
-{ 
+{
 	return m_Vec3Rotation;
 }

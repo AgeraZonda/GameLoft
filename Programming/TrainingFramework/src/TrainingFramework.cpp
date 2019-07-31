@@ -1,38 +1,37 @@
 #include "targetver.h"
-#include "Vertex.h"
 #include "Shaders.h"
 #include "Application.h"
 #include "utilities.h" 
 
-GLint screenWidth = 640;
-GLint screenHeight = 720;
+GLint screenWidth = 480;
+GLint screenHeight = 800;
 
 
-GLint Init ( ESContext *esContext )
+GLint Init(ESContext* esContext)
 {
 	Application::GetInstance()->Init();
 	return 0;
 }
 
-void Draw ( ESContext *esContext )
+void Draw(ESContext* esContext)
 {
 	Application::GetInstance()->Render();
-	eglSwapBuffers ( esContext->eglDisplay, esContext->eglSurface );
+	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
 }
 
-void Update ( ESContext *esContext, GLfloat deltaTime )
+void Update(ESContext* esContext, GLfloat deltaTime)
 {
 	Application::GetInstance()->Update(deltaTime);
 }
 
-void Key ( ESContext *esContext, unsigned char key, bool bbIsPresseded)
+void Key(ESContext* esContext, unsigned char key, bool bbIsPresseded)
 {
 	Application::GetInstance()->HandleKeyEvent(key, bbIsPresseded);
 }
 
-void Mouse (ESContext *esContext, GLint x, GLint y, bool bbIsPresseded)
+void Mouse(ESContext* esContext, GLint x, GLint y, bool bbIsPresseded)
 {
-	Application::GetInstance()->HandleTouchEvent(x,y,bbIsPresseded);
+	Application::GetInstance()->HandleTouchEvent(x, y, bbIsPresseded);
 }
 
 void CleanUp()
@@ -45,16 +44,16 @@ GLint _tmain(GLint argc, _TCHAR* argv[])
 {
 
 	ESContext esContext;
-    esInitContext ( &esContext );
-	esCreateWindow ( &esContext, "Demo Game", screenWidth, screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
-	if ( Init ( &esContext ) != 0 )
+	esInitContext(&esContext);
+	esCreateWindow(&esContext, "Demo Game", screenWidth, screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
+	if (Init(&esContext) != 0)
 		return 0;
 
-	esRegisterDrawFunc ( &esContext, Draw );
-	esRegisterUpdateFunc ( &esContext, Update );
-	esRegisterKeyFunc ( &esContext, Key);
-	esRegisterMouseFunc ( &esContext, Mouse);
-	esMainLoop ( &esContext );
+	esRegisterDrawFunc(&esContext, Draw);
+	esRegisterUpdateFunc(&esContext, Update);
+	esRegisterKeyFunc(&esContext, Key);
+	esRegisterMouseFunc(&esContext, Mouse);
+	esMainLoop(&esContext);
 
 	//releasing OpenGL resources
 	CleanUp();
