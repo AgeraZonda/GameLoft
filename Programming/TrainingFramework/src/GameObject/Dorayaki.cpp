@@ -1,22 +1,31 @@
-#include "Dorayaki.h"
+
 #include "GameManager/ResourceManagers.h"
 #include <GameStates\GSPlay.h>
+#include "Dorayaki.h"
 Dorayaki::Dorayaki(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
-	m_active = false;
+	m_TargetPosition = Vector2(0, 0);
+	m_active = true;
 	m_MaxCooldown = 0.3;
 	m_Cooldown = 0.0;
 	m_speed = 250;
 	m_MaxSpeed = 500;
 	m_Heal = 5;
 	m_Value = 10;
+	m_Explosive = false;
 	m_SizeCollider = 20;
-	m_type = DORAYAKI_TYPE::None;
 	m_isPull = false;
+}void Dorayaki::MoveToPossition(Vector2 pos)
+{
+	m_TargetPosition = pos;
 }
-
-
+void Dorayaki::Follow(Vector2 vector)
+{
+	m_speedX = vector.x;
+	m_speedY = vector.y;
+	MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
+}
 Dorayaki::~Dorayaki()
 {
 }
@@ -26,42 +35,76 @@ void Dorayaki::Update(float deltaTime)
 {
 	if (!m_active)
 		return;
-
-
-
-
 	Vector2 pos = Get2DPosition();
-	pos.y = pos.y + m_speed * deltaTime;
+	if (pos.x < m_TargetPosition.x)
+	{
+		pos.x += m_speedX * deltaTime;
+		if (pos.x > m_TargetPosition.x)
+			pos.x = m_TargetPosition.x;
+	}
+
+	if (pos.x > m_TargetPosition.x)
+	{
+		pos.x -= m_speedX * deltaTime;
+		if (pos.x < m_TargetPosition.x)
+			pos.x = m_TargetPosition.x;
+	}
+
+	if (pos.y < m_TargetPosition.y)
+	{
+		pos.y += m_speedY * deltaTime;
+		if (pos.y > m_TargetPosition.y)
+			pos.y = m_TargetPosition.y;
+	}
+
+	if (pos.y > m_TargetPosition.y)
+	{
+		pos.y -= m_speedY * deltaTime;
+		if (pos.y < m_TargetPosition.y)
+			pos.y = m_TargetPosition.y;
+	}
+
 	Set2DPosition(pos);
-
-	if (pos.y > Application::screenHeight)
+	if (pos.y >= Application::screenHeight - 200 && m_TargetPosition.y == Application::screenHeight - 150)
 		m_active = false;
-}
+	//if (m_Heal <= 0 || m_Explosive)
+	//{
+	//	SoundManager::GetInstance()->PlaySound("explosive");
+	//	m_Explosive = true;
+	//	GSPlay::m_score ++;
+	//	return;
+	//}
 
+	//if (m_Cooldown > 0)
+	//{
+	//	m_Cooldown -= deltaTime;
+	//}
+
+	//Vector2 pos = Get2DPosition();
+	//pos.y = pos.y + m_speed * deltaTime;
+	//Set2DPosition(pos);
+
+	//if (pos.y > Application::screenHeight)
+	//	m_active = false;
+}
+bool Dorayaki::isPull()
+{
+	return m_isPull;
+}
+void Dorayaki::setIsPull(bool pull)
+{
+	m_isPull = pull;
+}
+bool Dorayaki::CanShoot()
+{
+	return (m_Cooldown <= 0);
+}
 
 
 float Dorayaki::distance(Vector2 pos, Vector2 target)
 {
 	return sqrt((pos.x - target.x) * (pos.x - target.x) + (pos.y - target.y) * (pos.y - target.y));
 }
-
-void Dorayaki::SetType(DORAYAKI_TYPE type)
-{
-	m_type = type;
-}
-
-DORAYAKI_TYPE Dorayaki::GetType()
-{
-	return m_type;
-}
-//void Dorayaki::CheckCollider(std::shared_ptr<Magnet> Magnet)
-//{
-//	Vector2 pos = Get2DPosition();
-//	if (distance(pos, Magnet->Get2DPosition()) < m_SizeCollider + Magnet->GetColliderSize())
-//	{
-//		m_isPull = true;
-//	}
-//}
 
 
 bool Dorayaki::IsActive()
@@ -72,6 +115,7 @@ bool Dorayaki::IsActive()
 void Dorayaki::SetActive(bool status)
 {
 	m_active = status;
+	m_Explosive = false;
 	m_Heal = 10;
 }
 
@@ -85,9 +129,15 @@ float Dorayaki::GetValue()
 	return m_Value;
 }
 
+void Dorayaki::Explosive()
+{
+	m_Explosive = true;
+}
 
-
-
+bool Dorayaki::IsExplosive()
+{
+	return m_Explosive;
+}
 
 
 void Dorayaki::SetColliderSize(float size)

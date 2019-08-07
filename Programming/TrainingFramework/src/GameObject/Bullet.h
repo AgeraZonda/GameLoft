@@ -17,10 +17,10 @@ public:
 
 	void		Update(GLfloat deltatime) override;
 	void		SetSpeed(float speed);
-
+	void MoveToPossition(Vector2 pos);
 	bool		IsActive();
 	void		SetActive(bool status);
-
+	void		Follow(Vector2 vector);
 	void		SetType(BULLET_TYPE type);
 	BULLET_TYPE	GetType();
 
@@ -31,9 +31,13 @@ public:
 	float		GetDamage();
 			
 private:
+	Vector2 m_TargetPosition;
 	BULLET_TYPE m_type;
 	bool	m_active;
 	float	m_speed;
 	float	m_SizeCollider;
 	float	m_Damage;
+	float m_speedX;
+	float m_speedY;
+
 };

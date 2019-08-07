@@ -4,7 +4,7 @@
 Dorayaki::Dorayaki(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
-	m_active = false;
+	m_active = true;
 	m_MaxCooldown = 0.3;
 	m_Cooldown = 0.0;
 	m_speed = 250;
@@ -15,10 +15,7 @@ Dorayaki::Dorayaki(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& sha
 	m_type = DORAYAKI_TYPE::None;
 	m_isPull = false;
 }
-void Dorayaki::setIsPull(bool isPull)
-{
-	this->isPull = isPull;
-}
+
 
 Dorayaki::~Dorayaki()
 {
@@ -33,12 +30,12 @@ void Dorayaki::Update(float deltaTime)
 
 
 
-	Vector2 pos = Get2DPosition();
+	/*Vector2 pos = Get2DPosition();
 	pos.y = pos.y + m_speed * deltaTime;
 	Set2DPosition(pos);
 
 	if (pos.y > Application::screenHeight)
-		m_active = false;
+		m_active = false;*/
 }
 
 
@@ -57,14 +54,14 @@ DORAYAKI_TYPE Dorayaki::GetType()
 {
 	return m_type;
 }
-void Dorayaki::CheckCollider(std::shared_ptr<Magnet> Magnet)
-{
-	Vector2 pos = Get2DPosition();
-	if (distance(pos, Magnet->Get2DPosition()) < m_SizeCollider + Magnet->GetColliderSize())
-	{
-		m_isPull = true;
-	}
-}
+//void Dorayaki::CheckCollider(std::shared_ptr<Magnet> Magnet)
+//{
+//	Vector2 pos = Get2DPosition();
+//	if (distance(pos, Magnet->Get2DPosition()) < m_SizeCollider + Magnet->GetColliderSize())
+//	{
+//		m_isPull = true;
+//	}
+//}
 
 
 bool Dorayaki::IsActive()

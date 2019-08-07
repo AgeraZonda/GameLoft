@@ -24,6 +24,10 @@ Magnet::Magnet(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader,
 Magnet::~Magnet()
 {
 }
+int Magnet::getCurrentPoint()
+{
+	return m_CurrentPoint;
+}
 int Magnet::getDirection()
 {
 	return m_CurrentDirection;
@@ -35,7 +39,6 @@ void Magnet::setDirection(int angle)
 void Magnet::MoveToPossition(Vector2 pos)
 {
 	m_TargetPosition = pos;
-	
 }
 
 void Magnet::Update(GLfloat deltatime)
@@ -140,23 +143,27 @@ float Magnet::distance(Vector2 pos, Vector2 target)
 	return sqrt((pos.x - target.x) * (pos.x - target.x) + (pos.y - target.y) * (pos.y - target.y));
 }
 
-//void Magnet::CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listBullet)
-//{
-//	Vector2 pos = Get2DPosition();
-//
-//
-//	for (auto bullet : listBullet)
-//	{
-//		if (bullet->IsActive())
-//		{
-//			if (distance(pos, bullet->Get2DPosition()) < m_SizeCollider + bullet->GetColliderSize())
-//			{
-//				bullet->SetActive(false);
-//				m_CurrentPoint -= bullet->GetValue();
-//			}
-//		}
-//	}
-//}
+void Magnet::CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listDorayaki)
+{
+	Vector2 pos = Get2DPosition();
+
+
+	for (auto dorayaki : listDorayaki)
+	{
+		if (dorayaki->IsActive())
+		{
+			if (distance(pos, dorayaki->Get2DPosition()) < m_SizeCollider + dorayaki->GetColliderSize() && !dorayaki->isPull())
+			{
+				MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
+				m_speedX = fabs(m_speedX);
+				m_speedY = fabs(m_speedY);
+				dorayaki->Follow(Vector2(m_speedX,m_speedY));
+				m_CurrentPoint += dorayaki->GetValue();
+				dorayaki->setIsPull(true);
+			}
+		}
+	}
+}
 
 void Magnet::SetColliderSize(float size)
 {

@@ -9,11 +9,11 @@
 #include "Font.h"
 #include "Text.h"
 #include "Player.h"
-#include "Dorayaki.h"
 #include "Magnet.h"
 #include "ExplosiveEffect.h"
 
 int GSPlay::m_score = 0;
+float GSPlay::m_timeleft = 60;
 GSPlay::GSPlay()
 {
 	//m_SpawnCooldown = 0.5;
@@ -49,7 +49,7 @@ void GSPlay::Init()
 	m_Magnet->Set2DPosition(Application::screenWidth / 2, Application::screenHeight - 150);
 	m_Magnet->MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
 	m_Magnet->SetSize(60, 100);
-
+	
 	//text game title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
@@ -65,6 +65,13 @@ void GSPlay::Init()
 	std::shared_ptr<ExplosiveEffect> exp = std::make_shared<ExplosiveEffect>(model, shader, texture, Vector2(960, 768), Vector2(192, 192), 0, 19, 0.7);
 	exp->SetSize(100, 100);
 	exp->SetActive(false);
+
+	CreateRandomDorayaki();
+	CreateRandomDorayaki();
+	CreateRandomDorayaki();
+	CreateRandomDorayaki();
+
+
 	//m_listExplosiveEffect.push_back(exp);
 
 	//init sound
@@ -119,34 +126,23 @@ void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
 
 void GSPlay::Update(float deltaTime)
 {
-	m_Magnet->Update(deltaTime);
-	/*if (m_SpawnCooldown > 0)
-	{
-		m_SpawnCooldown -= deltaTime;
-	}
-	if (m_SpawnCooldown <= 0)
-	{
-		CreateRandomDorayaki();
-		m_SpawnCooldown = 0.3;
-	}*/
+	if (m_Magnet->GetTimeLeft() > 0)
+		m_Magnet->Update(deltaTime);
 
-	//update player
-	//if (m_Player->IsAlive())
-	//{
-	//	m_Player->Update(deltaTime);
+	m_Magnet->CheckCollider(m_listDorayaki);
 
-	//	if (m_Player->CanShoot())
-	//		m_Player->Shoot(m_listBullet);
+	
 
-	//	m_Player->CheckCollider(m_listBullet, m_listEnermy);
-	//}
+
+
+
 
 	//update enermies
 	for (auto dorayaki : m_listDorayaki)
 	{
 		if (dorayaki->IsActive())
 		{
-			
+
 			dorayaki->Update(deltaTime);
 			//dorayaki->CheckCollider(m_Magnet);
 		}
@@ -164,14 +160,17 @@ void GSPlay::Update(float deltaTime)
 	//update bullets
 
 	//update Score
+	m_timeleft -= deltaTime;
+	std::cout << (int)m_timeleft << std::endl;
+	m_score = m_Magnet->getCurrentPoint();
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(0) << m_score;
 	std::string score = "SCORE: " + stream.str();
 	m_scoreText->setText(score);
 	std::stringstream stream2;
-	stream2 << std::fixed << std::setprecision(0) << m_Player->GetHeal();
+	stream2 << std::fixed << std::setprecision(0) << m_timeleft;
 	std::string heal = "HEAL: " + stream2.str();
-	m_playerTimeLeftText->setText("11");
+	m_playerTimeLeftText->setText(heal);
 }
 
 void GSPlay::Draw()
@@ -179,9 +178,9 @@ void GSPlay::Draw()
 	//ground
 	m_BackGround->Draw();
 
-	for (auto enermy : m_listDorayaki)
-		if (enermy->IsActive())
-			enermy->Draw();
+	for (auto dorayaki : m_listDorayaki)
+		if (dorayaki->IsActive())
+			dorayaki->Draw();
 
 	if (m_Player->IsAlive())
 		m_Player->Draw();
@@ -204,37 +203,40 @@ void GSPlay::Draw()
 	m_playerTimeLeftText->Draw();
 }
 
-//void GSPlay::CreateRandomDorayaki()
-//{
-//
-//	int range = Application::screenWidth - 10 + 1;
-//	int num = rand() % range + 10;
-//
-//	Vector2 pos;
-//	pos.x = num;
-//	pos.y = 10;
-//
-//	for (auto enermy : m_listDorayaki)
-//	{
-//		if (!enermy->IsActive())
-//		{
-//			enermy->SetActive(true);
-//			enermy->Set2DPosition(pos);
-//			return;
-//		}
-//	}
-//	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
-//	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
-//	auto texture = ResourceManagers::GetInstance()->GetTexture("dorayaki");
-//
-//	std::shared_ptr<Dorayaki> enermy = std::make_shared<Dorayaki>(model, shader, texture);
-//	enermy->Set2DPosition(pos);
-//	enermy->SetSize(40, 40);
-//	enermy->SetRotation(180);
-//	m_listDorayaki.push_back(enermy);
-//}
-//
-//
+void GSPlay::CreateRandomDorayaki()
+{
+
+	int rangeX = Application::screenWidth - 10 + 1;
+	int rangeY = 300;
+	int numX = rand() % rangeX + 10;
+	int numY = rand() % rangeY + 10;
+
+	Vector2 pos;
+	pos.x = numX;
+	pos.y = numY;
+
+	for (auto enermy : m_listDorayaki)
+	{
+		if (!enermy->IsActive())
+		{
+			enermy->SetActive(true);
+			enermy->Set2DPosition(pos);
+			return;
+		}
+	}
+	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
+	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("dorayaki");
+
+	std::shared_ptr<Dorayaki> dorayaki = std::make_shared<Dorayaki>(model, shader, texture);
+	dorayaki->Set2DPosition(pos);
+	dorayaki->SetSize(120, 120);
+	dorayaki->SetRotation(180);
+	dorayaki->MoveToPossition(pos);
+	m_listDorayaki.push_back(dorayaki);
+}
+
+
 //void GSPlay::SpawnExplosive(Vector2 pos)
 //{
 //	for (auto exp : m_listExplosiveEffect)

@@ -21,7 +21,7 @@ public:
 
 	void		Update(float deltaTime) override;
 
-	void		CheckCollider(std::shared_ptr<Magnet> Magnet);
+	//void		CheckCollider(std::shared_ptr<Magnet> Magnet);
 
 	void		SetColliderSize(float size);
 	float		GetColliderSize();

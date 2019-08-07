@@ -1,15 +1,7 @@
 #pragma once
 
 #include "Sprite2D.h"
-#include "Magnet.h"
-enum class DORAYAKI_TYPE
-{
-	None,
-	Dorayaki,
-	Xuka,
-	Mimi,
-	StrongBuff
-};
+
 
 class Dorayaki : public Sprite2D
 {
@@ -18,32 +10,38 @@ public:
 	~Dorayaki();
 	bool		IsActive();
 	void		SetActive(bool status);
-
+	void MoveToPossition(Vector2 pos);
 	void		Update(float deltaTime) override;
-
-	//void		CheckCollider(std::shared_ptr<Magnet> Magnet);
+	void		Follow(Vector2 vector);
+	bool		CanShoot();
 
 	void		SetColliderSize(float size);
 	float		GetColliderSize();
 
-	void		SetValue(float damage);
+	void		SetValue(float value);
 	float		GetValue();
-	void		SetType(DORAYAKI_TYPE type);
-	DORAYAKI_TYPE	GetType();
-	void		setIsPull(bool isPull);
 	bool		isPull();
+	void		setIsPull(bool pull);
+	void		Explosive();
+	bool		IsExplosive();
 
 private:
 	int		m_Heal;
 	bool	m_active;
+	bool	m_Explosive;
 	float	m_speed;
 	float	m_MaxSpeed;
 	float	m_MaxCooldown;
 	float	m_Cooldown;
 	float	m_Value;
 	float	m_SizeCollider;
+	float	m_speedX;
+	float	m_speedY;
 	bool	m_isPull;
-	DORAYAKI_TYPE m_type;
+	Vector2 m_TargetPosition;
+
+
 	float distance(Vector2 pos, Vector2 target);
 
 };
+#pragma once

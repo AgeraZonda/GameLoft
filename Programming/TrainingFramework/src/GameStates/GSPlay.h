@@ -5,6 +5,7 @@ class Player;
 class Dorayaki;
 class Magnet;
 class Text;
+class Enermy;
 class ExplosiveEffect;
 
 class GSPlay :
@@ -29,6 +30,7 @@ public:
 	void Draw() override;
 	
 	static int m_score;
+	static float m_timeleft;
 
 private:
 	std::shared_ptr<Sprite2D> m_BackGround;
@@ -37,10 +39,11 @@ private:
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Magnet> m_Magnet;
 	std::vector<std::shared_ptr<Dorayaki>> m_listDorayaki;
+	std::vector<std::shared_ptr<Enermy>> m_listEnemy;
 	//std::vector<std::shared_ptr<ExplosiveEffect>> m_listExplosiveEffect;
 
 	//float m_SpawnCooldown;
-	//void CreateRandomDorayaki();
+	void CreateRandomDorayaki();
 	//void SpawnExplosive(Vector2 pos);
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "Sprite2D.h"
-#include "Bullet.h"
-#include <Enermy.h>
+#include "Dorayaki.h"
+
 
 class Player : public Sprite2D
 {
@@ -14,9 +14,9 @@ public:
 	void Update(GLfloat deltatime) override;
 
 	bool CanShoot();
-	void Shoot(std::vector<std::shared_ptr<Bullet>>& listBullet);
+	//void Shoot(std::vector<std::shared_ptr<Bullet>>& listBullet);
 
-	void CheckCollider(std::vector<std::shared_ptr<Bullet>>& listBullet, std::vector<std::shared_ptr<Enermy>> listEnermy);
+	//void CheckCollider(std::vector<std::shared_ptr<Bullet>>& listBullet, std::vector<std::shared_ptr<Enermy>> listEnermy);
 
 	void		SetColliderSize(float size);
 	float		GetColliderSize();

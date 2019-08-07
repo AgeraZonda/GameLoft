@@ -16,8 +16,8 @@ public:
 	bool isPull();
 	int getDirection();
 	void setDirection(int angle);
-
-	//void CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listBullet);
+	int getCurrentPoint();
+	void CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listBullet);
 
 	void		SetColliderSize(float size);
 	float		GetColliderSize();
@@ -34,7 +34,7 @@ private:
 	float	m_Cooldown;
 	float   m_Cooldown2;
 	float	m_SizeCollider;
-	float   m_CurrentPoint;
+	int   m_CurrentPoint;
 	float		m_angle;
 	float		m_CurrentDirection;
 	bool	m_isPull;

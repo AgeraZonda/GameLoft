@@ -24,12 +24,6 @@
     <ClCompile Include="src\TrainingFramework.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Bullet.cpp">
-      <Filter>src\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Enermy.cpp">
-      <Filter>src\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="src\GameObject\Font.cpp">
       <Filter>src\GameObject</Filter>
     </ClCompile>
@@ -87,10 +81,13 @@
     <ClCompile Include="src\GameObject\ExplosiveEffect.cpp">
       <Filter>src\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Dorayaki.cpp">
+    <ClCompile Include="src\GameObject\Magnet.cpp">
       <Filter>src\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Magnet.cpp">
+    <ClCompile Include="src\GameObject\Bullet.cpp">
+      <Filter>src\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Dorayaki.cpp">
       <Filter>src\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,12 +99,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\BaseObject.h">
-      <Filter>src\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Bullet.h">
-      <Filter>src\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Enermy.h">
       <Filter>src\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Font.h">
@@ -176,10 +167,13 @@
     <ClInclude Include="src\GameObject\ExplosiveEffect.h">
       <Filter>src\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObject\Dorayaki.h">
+    <ClInclude Include="src\GameObject\Magnet.h">
       <Filter>src\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObject\Magnet.h">
+    <ClInclude Include="src\GameObject\Bullet.h">
+      <Filter>src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Dorayaki.h">
       <Filter>src\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
