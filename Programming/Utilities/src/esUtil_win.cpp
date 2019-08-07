@@ -67,6 +67,15 @@ LRESULT WINAPI ESWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	}
 	break;
+	case WM_MOUSEMOVE:
+	{
+		ESContext* esContext = (ESContext*)(LONG_PTR)GetWindowLongPtr(hWnd, GWL_USERDATA);
+		POINT      point;
+		GetCursorPos(&point);
+		if (esContext && esContext->mousePosiontion)
+			esContext->mousePosiontion(esContext, (int)point.x - WDpoint.x, (int)point.y - WDpoint.y);
+	}
+	break;
 	case WM_MOVE:
 	{
 		WDpoint.x = (int)LOWORD(lParam);   // horizontal position 

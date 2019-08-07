@@ -1,7 +1,7 @@
 #pragma once
 #include "GameStateMachine.h"
 #include "GameManager/ResourceManagers.h"
-
+#include "Application.h"
 
 class GameStateBase
 {
@@ -18,6 +18,7 @@ public:
 	virtual void HandleEvents() = 0;
 	virtual void HandleKeyEvents(int key, bool bIsPressed) = 0;
 	virtual void HandleTouchEvents(int x, int y, bool bIsPressed) = 0;
+	virtual void HandleMouseEvents(int x, int y) = 0;
 	virtual void Update(float deltaTime ) = 0;
 	virtual void Draw() = 0;
 	/*

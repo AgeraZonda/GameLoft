@@ -8,17 +8,18 @@ public:
 	GSIntro();
 	~GSIntro();
 
-	void Init();
-	void Exit();
+	void Init()override;
+	void Exit()override;
 
-	void Pause();
-	void Resume();
+	void Pause()override;
+	void Resume()override;
 
-	void HandleEvents();
-	void HandleKeyEvents(int key, bool bIsPressed);
-	void HandleTouchEvents(int x, int y, bool bIsPressed);
-	void Update(float deltaTime);
-	void Draw();
+	void HandleEvents()override;
+	void HandleKeyEvents(int key, bool bIsPressed)override;
+	void HandleTouchEvents(int x, int y, bool bIsPressed)override;
+	void HandleMouseEvents(int x, int y) override;
+	void Update(float deltaTime) override;
+	void Draw()override;
 
 private:
 	std::shared_ptr<Sprite2D> m_logo;

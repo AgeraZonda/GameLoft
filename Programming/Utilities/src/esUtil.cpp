@@ -181,6 +181,14 @@ void ESUTIL_API esRegisterMouseFunc ( ESContext *esContext,
 }
 
 
+
+void ESUTIL_API esRegisterMousePositionFunc(ESContext* esContext,
+	void (ESCALLBACK* mousePosiontion) (ESContext*, int, int))
+{
+	esContext->mousePosiontion = mousePosiontion;
+}
+
+
 // esLogMessage()
 //    Log an error message to the debug output for the platform
 

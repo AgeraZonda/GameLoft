@@ -1,5 +1,5 @@
 #pragma once
-#include "GameManager/Singleton.h"
+#include "Helper/Singleton.h"
 #include "GameConfig.h"
 #include <list>
 

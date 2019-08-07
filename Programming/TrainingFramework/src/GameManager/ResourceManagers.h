@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include "GameManager/Singleton.h"
+#include "Helper/Singleton.h"
 #include "GameConfig.h"
 #include "GameObject/Shaders.h"
 #include "GameObject/Texture.h"
@@ -10,6 +10,7 @@
 #include "GameObject/Sprite2D.h"
 #include "GameObject/Sprite3D.h"
 #include "GameObject/Text.h"
+#include "SoundManager.h"
 
 class ResourceManagers : public CSingleton<ResourceManagers>
 {

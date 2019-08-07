@@ -1,8 +1,5 @@
 #include "GSMenu.h"
 
-extern int screenWidth; //need get on Graphic engine
-extern int screenHeight; //need get on Graphic engine
-
 GSMenu::GSMenu()
 {
 
@@ -19,17 +16,18 @@ void GSMenu::Init()
 {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("bg");
-
+	
 	//BackGround
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
-	m_BackGround->Set2DPosition(screenWidth / 2, screenHeight / 2);
-	m_BackGround->SetSize(screenWidth, screenHeight );
+	m_BackGround->Set2DPosition(Application::screenWidth / 2, Application::screenHeight / 2);
+	m_BackGround->SetSize(Application::screenWidth, -Application::screenHeight);
+
 
 	//play button
 	texture = ResourceManagers::GetInstance()->GetTexture("button_play");
 	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(screenWidth / 2, 150);
+	button->Set2DPosition(Application::screenWidth / 2, 150);
 	button->SetSize(200, 50);
 	button->SetOnClick([]() {
 		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
@@ -39,7 +37,7 @@ void GSMenu::Init()
 	//exit button
 	texture = ResourceManagers::GetInstance()->GetTexture("button_exit");
 	button = std::make_shared<GameButton>(model, shader, texture);
-	button->Set2DPosition(screenWidth / 2, 250);
+	button->Set2DPosition(Application::screenWidth / 2, 250);
 	button->SetSize(200, 50);
 	button->SetOnClick([]() {
 		exit(0);
@@ -50,8 +48,8 @@ void GSMenu::Init()
 	//text game title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-	m_Text_gameName = std::make_shared< Text>(shader, font, "Doremon Empires", TEXT_COLOR::WHILE, 1.5);
-	m_Text_gameName->Set2DPosition(Vector2(screenWidth / 2 - 150, 80));
+	m_Text_gameName = std::make_shared< Text>(shader, font, "Doraemon Empires", TEXT_COLOR::WHILE, 1.3);
+	m_Text_gameName->Set2DPosition(Vector2(Application::screenWidth / 2 - 140, 80));
 }
 
 void GSMenu::Exit()
@@ -87,6 +85,10 @@ void GSMenu::HandleTouchEvents(int x, int y, bool bIsPressed)
 		(it)->HandleTouchEvents(x, y, bIsPressed);
 		if ((it)->IsHandle()) break;
 	}
+}
+
+void GSMenu::HandleMouseEvents(int x, int y)
+{
 }
 
 void GSMenu::Update(float deltaTime)

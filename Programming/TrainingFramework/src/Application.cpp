@@ -1,9 +1,10 @@
 #include "Application.h"
 #include "GameStates/GameStateMachine.h"
 #include "GameStates/GameStatebase.h"
-extern GLint screenWidth;
-extern GLint screenHeight;
+#include "GameManager/SoundManager.h"
 
+int Application::screenWidth = 480;
+int Application::screenHeight = 700;
 
 Application::Application()
 {
@@ -35,6 +36,7 @@ void Application::Render()
 
 	if (GameStateMachine::GetInstance()->HasState())
 		GameStateMachine::GetInstance()->CurrentState()->Draw();
+
 }
 
 void Application::HandleKeyEvent(unsigned char key, bool bIsPresseded)
@@ -49,6 +51,12 @@ void Application::HandleTouchEvent(GLint x, GLint y, bool bIsPresseded)
 
 	if (GameStateMachine::GetInstance()->HasState())
 		GameStateMachine::GetInstance()->CurrentState()->HandleTouchEvents(x, y, bIsPresseded);
+}
+
+void Application::HandleMouseEvent(GLint x, GLint y)
+{
+	if (GameStateMachine::GetInstance()->HasState())
+		GameStateMachine::GetInstance()->CurrentState()->HandleMouseEvents(x, y);
 }
 
 void Application::Exit()

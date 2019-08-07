@@ -3,8 +3,7 @@
 #include "Application.h"
 #include "utilities.h" 
 
-GLint screenWidth = 480;
-GLint screenHeight = 800;
+
 
 
 GLint Init(ESContext* esContext)
@@ -34,6 +33,12 @@ void Mouse(ESContext* esContext, GLint x, GLint y, bool bbIsPresseded)
 	Application::GetInstance()->HandleTouchEvent(x, y, bbIsPresseded);
 }
 
+
+void MousePos(ESContext* esContext, GLint x, GLint y)
+{
+	Application::GetInstance()->HandleMouseEvent(x, y);
+}
+
 void CleanUp()
 {
 	Application::GetInstance()->Exit();
@@ -45,7 +50,7 @@ GLint _tmain(GLint argc, _TCHAR* argv[])
 
 	ESContext esContext;
 	esInitContext(&esContext);
-	esCreateWindow(&esContext, "Demo Game", screenWidth, screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
+	esCreateWindow(&esContext, "Demo Game", Application::screenWidth, Application::screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
 	if (Init(&esContext) != 0)
 		return 0;
 
@@ -53,13 +58,14 @@ GLint _tmain(GLint argc, _TCHAR* argv[])
 	esRegisterUpdateFunc(&esContext, Update);
 	esRegisterKeyFunc(&esContext, Key);
 	esRegisterMouseFunc(&esContext, Mouse);
+	esRegisterMousePositionFunc(&esContext, MousePos);
 	esMainLoop(&esContext);
 
 	//releasing OpenGL resources
 	CleanUp();
 
 	//identifying memory leaks
-	MemoryDump();
+	//MemoryDump();
 	//printf("Press any key...\n");
 	//_getch();
 

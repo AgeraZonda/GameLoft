@@ -1,10 +1,6 @@
 #include "GSIntro.h"
 
 
-extern int screenWidth; //need get on Graphic engine
-extern int screenHeight; //need get on Graphic engine
-
-
 GSIntro::GSIntro()
 {
 	m_time = 0;
@@ -23,8 +19,8 @@ void GSIntro::Init()
 	auto texture = ResourceManagers::GetInstance()->GetTexture("mylogo");
 
 	m_logo = std::make_shared<Sprite2D>(model, shader, texture);
-	m_logo->Set2DPosition(screenWidth / 2, screenHeight / 2);
-	m_logo->SetSize(180, -150);
+	m_logo->Set2DPosition(Application::screenWidth / 2, Application::screenHeight / 2);
+	m_logo->SetSize(180, 150);
 }
 
 void GSIntro::Exit()
@@ -57,6 +53,10 @@ void GSIntro::HandleKeyEvents(int key, bool bIsPressed)
 void GSIntro::HandleTouchEvents(int x, int y, bool bIsPressed)
 {
 
+}
+
+void GSIntro::HandleMouseEvents(int x, int y)
+{
 }
 
 void GSIntro::Update(float deltaTime)

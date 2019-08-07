@@ -23,6 +23,7 @@ int Texture::Init(const char *szFileName,GLuint iWapMode,GLuint iFilterMode)
 		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,w,h,0,GL_RGBA,GL_UNSIGNED_BYTE,imageData);
 		break;
 	}
+	m_textureSize = Vector2(w, h);
 
 	if(imageData!=0) delete imageData;
 
@@ -51,4 +52,9 @@ GLuint Texture::Get2DTextureId()
 GLuint Texture::Get2DTextureAdd()
 {
 	return m_iTextGlId;
+}
+
+Vector2 Texture::GetTextureSize()
+{
+	return m_textureSize;
 }

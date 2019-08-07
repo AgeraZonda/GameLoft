@@ -7,10 +7,10 @@ Models::Models(const std::string& fileName, GLuint type)
 	std::ifstream modelFile(fileName, std::ios::binary);
 	if (!modelFile.is_open())
 	{
-		LOGE("ERROR %s \n", fileName);
+		LOGE("ERROR %s \n", fileName.c_str());
 		return;
 	}
-	LOGI("Load Models:%s\t\t", fileName);
+	LOGI("Load Models:%s\t\t", fileName.c_str());
 
 	GLuint iNumVertex = 0;
 	Vertex* verticesData;

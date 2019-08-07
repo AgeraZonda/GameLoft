@@ -1,10 +1,8 @@
 #include "Text.h"
 #include "Font.h"
 #include "Shaders.h"
+#include "Application.h"
 
-
-extern GLint screenWidth;
-extern GLint screenHeight;
 
 
 void Text::CaculateWorldMatrix()
@@ -21,8 +19,8 @@ Text::Text(std::shared_ptr<Shaders> sha, std::shared_ptr<Font> font, std::string
 	m_Vec3Position = Vector3(0, 0, 0);
 	m_Vec2DPos = Vector2(0, 0);
 
-	float xx = (2.0 * m_Vec2DPos.x) / screenWidth - 1.0;
-	float yy = 1.0 - (2.0 * m_Vec2DPos.y) / screenHeight;
+	float xx = (2.0 * m_Vec2DPos.x) / Application::screenWidth - 1.0;
+	float yy = 1.0 - (2.0 * m_Vec2DPos.y) / Application::screenHeight;
 	m_Vec3Position = Vector3(xx, yy, 1.0);
 	m_font = font;
 	m_text = text;
@@ -71,8 +69,8 @@ void Text::Draw()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	float sx = 1.0f / screenWidth * m_scale.x;
-	float sy = 1.0f / screenHeight * m_scale.y;
+	float sx = 1.0f / Application::screenWidth * m_scale.x;
+	float sy = 1.0f / Application::screenHeight * m_scale.y;
 	float x = m_Vec3Position.x;
 	float y = m_Vec3Position.y;
 
@@ -168,8 +166,8 @@ void Text::Set2DPosition(GLfloat width, GLfloat height)
 	m_Vec2DPos.x = width;
 	m_Vec2DPos.y = height;
 
-	float xx = (2.0 * m_Vec2DPos.x) / screenWidth - 1.0;
-	float yy = 1.0 - (2.0 * m_Vec2DPos.y) / screenHeight;
+	float xx = (2.0 * m_Vec2DPos.x) / Application::screenWidth - 1.0;
+	float yy = 1.0 - (2.0 * m_Vec2DPos.y) / Application::screenHeight;
 	m_Vec3Position = Vector3(xx, yy, 1.0);
 
 	CaculateWorldMatrix();
@@ -179,8 +177,8 @@ void Text::Set2DPosition(Vector2 pos)
 {
 	m_Vec2DPos = pos;
 
-	float xx = (2.0 * m_Vec2DPos.x) / screenWidth - 1.0;
-	float yy = 1.0 - (2.0 * m_Vec2DPos.y) / screenHeight;
+	float xx = (2.0 * m_Vec2DPos.x) / Application::screenWidth - 1.0;
+	float yy = 1.0 - (2.0 * m_Vec2DPos.y) / Application::screenHeight;
 	m_Vec3Position = Vector3(xx, yy, 1.0);
 
 	CaculateWorldMatrix();

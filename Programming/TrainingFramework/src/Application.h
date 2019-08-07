@@ -1,5 +1,5 @@
 #pragma once
-#include "Singleton.h"
+#include "Helper/Singleton.h"
 #include "GameConfig.h"
 
 
@@ -13,10 +13,12 @@ public:
 	void		Render();
 	void		HandleKeyEvent(unsigned char key, bool bIsPresseded);
 	void		HandleTouchEvent(GLint x, GLint y, bool bIsPresseded);
+	void		HandleMouseEvent(GLint x, GLint y);
 	void		Exit();
 
+	static int screenWidth;
+	static int screenHeight;
 private:
-	
 
 };
 

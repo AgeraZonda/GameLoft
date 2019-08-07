@@ -1,9 +1,11 @@
 #pragma once
 #include "gamestatebase.h"
 
-class Sprite2D;
-class Sprite3D;
+class Player;
+class Dorayaki;
+class Magnet;
 class Text;
+class ExplosiveEffect;
 
 class GSPlay :
 	public GameStateBase
@@ -12,29 +14,33 @@ public:
 	GSPlay();
 	~GSPlay();
 
-	void Init();
-	void Exit();
+	void Init()override;
+	void Exit()override;
 
-	void Pause();
-	void Resume();
+	void Pause()override;
+	void Resume()override;
 
-	void HandleEvents();
-	void HandleKeyEvents(int key, bool bIsPressed);
+	void HandleEvents() override;
+	void HandleKeyEvents(int key, bool bIsPressed) override;
+	void HandleMouseEvents(int x, int y) override;
 
-	void HandleTouchEvents(int x, int y, bool bIsPressed);
-	void Update(float deltaTime);
-	void Draw();
-
+	void HandleTouchEvents(int x, int y, bool bIsPressed) override;
+	void Update(float deltaTime) override;
+	void Draw() override;
 	
-	void SetNewPostionForBullet();
+	static int m_score;
 
 private:
-
 	std::shared_ptr<Sprite2D> m_BackGround;
-	std::shared_ptr<Text>  m_score;
-	std::shared_ptr<Sprite2D> m_Doraemon;
-	std::shared_ptr<Sprite2D> m_SinraTensei;
-	//std::shared_ptr<Sprite2D> m_Reward;
-	std::vector<std::shared_ptr<Sprite2D>> m_RewardList;
+	std::shared_ptr<Text>  m_scoreText;
+	std::shared_ptr<Text>  m_playerTimeLeftText;
+	std::shared_ptr<Player> m_Player;
+	std::shared_ptr<Magnet> m_Magnet;
+	std::vector<std::shared_ptr<Dorayaki>> m_listDorayaki;
+	//std::vector<std::shared_ptr<ExplosiveEffect>> m_listExplosiveEffect;
+
+	//float m_SpawnCooldown;
+	//void CreateRandomDorayaki();
+	//void SpawnExplosive(Vector2 pos);
 };
 
