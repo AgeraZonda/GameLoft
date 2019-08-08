@@ -66,7 +66,11 @@ void Dorayaki::Update(float deltaTime)
 
 	Set2DPosition(pos);
 	if (pos.y >= Application::screenHeight - 200 && m_TargetPosition.y == Application::screenHeight - 150)
+	{
+		SoundManager::GetInstance()->PlaySound("return");
 		m_active = false;
+	}
+		
 	//if (m_Heal <= 0 || m_Explosive)
 	//{
 	//	SoundManager::GetInstance()->PlaySound("explosive");

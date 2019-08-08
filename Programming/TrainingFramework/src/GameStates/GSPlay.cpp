@@ -75,12 +75,12 @@ void GSPlay::Init()
 	//m_listExplosiveEffect.push_back(exp);
 
 	//init sound
-	//SoundManager::GetInstance()->AddSound("explosive");
+	SoundManager::GetInstance()->AddSound("colide");
 	//SoundManager::GetInstance()->AddSound("explosive_2");
 	//SoundManager::GetInstance()->AddSound("bground");
-	//SoundManager::GetInstance()->AddSound("fire");
+	SoundManager::GetInstance()->AddSound("return");
 	//SoundManager::GetInstance()->AddSound("fire_enemy");
-	//SoundManager::GetInstance()->PlaySound("bground");
+	SoundManager::GetInstance()->PlaySound("bground");
 
 }
 

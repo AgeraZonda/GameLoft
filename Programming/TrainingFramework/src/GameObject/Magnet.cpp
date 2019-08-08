@@ -160,6 +160,7 @@ void Magnet::CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listDorayaki)
 				dorayaki->Follow(Vector2(m_speedX,m_speedY));
 				m_CurrentPoint += dorayaki->GetValue();
 				dorayaki->setIsPull(true);
+				SoundManager::GetInstance()->PlaySound("colide");
 			}
 		}
 	}
