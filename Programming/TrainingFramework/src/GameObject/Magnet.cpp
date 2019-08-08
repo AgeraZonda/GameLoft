@@ -135,7 +135,7 @@ void Magnet::Grab()
 	m_speedY = sqrt(125000/(1+pow(tan(m_angle * PI / 180),2)));
 	m_speedX = sqrt(125000 - pow(m_speedY, 2));
 	std::cout << m_speedY << " " << m_speedX << std::endl;
-	MoveToPossition(Vector2(tan(m_angle * PI / 180) * -1050, -500));
+	MoveToPossition(Vector2(tan(m_angle * PI / 180) * -1350, -500));
 	m_isPull = true;
 }
 float Magnet::distance(Vector2 pos, Vector2 target)
