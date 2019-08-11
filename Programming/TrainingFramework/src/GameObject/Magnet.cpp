@@ -1,16 +1,18 @@
 #include "Magnet.h"
 #include <math.h> 
 #include "GameManager/ResourceManagers.h"
+Vector2 oriPos;
 Magnet::Magnet(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
+
 	m_TargetPosition = Vector2(0, 0);
 	m_CurrentDirection = 50;
 	m_MaxCooldown = 0.1;
 	m_Cooldown = 0.0;
 	m_Cooldown2 = 0.0;
-	m_speedX = 250;
-	m_speedY = 250;
+	m_speed = 0;
+
 	m_MaxSpeed = 500;
 	m_TimeLeft = 100;
 	m_SizeCollider = 15;
@@ -86,56 +88,59 @@ void Magnet::Update(GLfloat deltatime)
 	if ((pos.y <= 50 || pos.y > Application::screenHeight-50 || pos.x <= 50 || pos.x > Application::screenWidth-50))
 	{
 			MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
-			m_speedX = fabs(m_speedX);
-			m_speedY =  fabs(m_speedY);
+			m_speed = -m_speed;
 	}
-	std::cout << m_Cooldown2 << " " << pos.y << std::endl;
+
 
 	
 	
 
 
-	if (pos.x < m_TargetPosition.x)
+	if (true)
 	{
-		pos.x += m_speedX * deltatime;
-		if (pos.x > m_TargetPosition.x)
-			pos.x = m_TargetPosition.x;
+		pos.x += m_speed * sin(m_angle * PI / 180) * deltatime;
+		//if (pos.x > m_TargetPosition.x)
+		//	pos.x = m_TargetPosition.x;
 	}
 
-	if (pos.x > m_TargetPosition.x)
+	if (false)
 	{
-		pos.x -= m_speedX * deltatime;
-		if (pos.x < m_TargetPosition.x)
-			pos.x = m_TargetPosition.x;
+		pos.x -= m_speed * sin(m_angle * PI / 180) * deltatime;
+		//if (pos.x < m_TargetPosition.x)
+		//	pos.x = m_TargetPosition.x;
 	}
 
-	if (pos.y < m_TargetPosition.y)
+	if (true)
 	{
-		pos.y += m_speedY * deltatime;
-		if (pos.y > m_TargetPosition.y)
-			pos.y = m_TargetPosition.y;
+		pos.y += m_speed * cos(m_angle * PI / 180) * deltatime;
+		//if (pos.y > m_TargetPosition.y)
+		//	pos.y = m_TargetPosition.y;
 	}
 
-	if (pos.y > m_TargetPosition.y)
+	if (false)
 	{
-		pos.y -= m_speedY * deltatime;
+		pos.y -= m_speed * cos(m_angle * PI / 180) * deltatime;
 		if (pos.y < m_TargetPosition.y)
 			pos.y = m_TargetPosition.y;
 	}
 
 	Set2DPosition(pos);
-	if (pos.y >= Application::screenHeight - 200 && m_TargetPosition.y !=-500)
+	if (Application::screenHeight - 150 -pos.y<= 3 && m_speed == 250)
+		
+	{
 		m_isPull = false;
+		m_speed = 0;
+	}
 }
 
-
+void Magnet::setCurrentPoint(int point)
+{
+	m_CurrentPoint = point;
+}
 void Magnet::Grab()
 {
-	float x, y;
-	m_speedY = sqrt(125000/(1+pow(tan(m_angle * PI / 180),2)));
-	m_speedX = sqrt(125000 - pow(m_speedY, 2));
-	std::cout << m_speedY << " " << m_speedX << std::endl;
-	MoveToPossition(Vector2(tan(m_angle * PI / 180) * -1350, -500));
+	oriPos = Get2DPosition();
+	m_speed = -250;
 	m_isPull = true;
 }
 float Magnet::distance(Vector2 pos, Vector2 target)
@@ -155,9 +160,8 @@ void Magnet::CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listDorayaki)
 			if (distance(pos, dorayaki->Get2DPosition()) < m_SizeCollider + dorayaki->GetColliderSize() && !dorayaki->isPull())
 			{
 				MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
-				m_speedX = fabs(m_speedX);
-				m_speedY = fabs(m_speedY);
-				dorayaki->Follow(Vector2(m_speedX,m_speedY));
+				m_speed = -m_speed;
+				dorayaki->Follow(Vector2(m_speed*sin(m_angle * PI / 180),m_speed*cos(m_angle * PI / 180)));
 				m_CurrentPoint += dorayaki->GetValue();
 				dorayaki->setIsPull(true);
 				SoundManager::GetInstance()->PlaySound("colide");

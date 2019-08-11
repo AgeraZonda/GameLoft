@@ -13,11 +13,10 @@
 #include "ExplosiveEffect.h"
 
 int GSPlay::m_score = 0;
-float GSPlay::m_timeleft = 60;
+float GSPlay::m_timeleft = 20;
 GSPlay::GSPlay()
 {
 	//m_SpawnCooldown = 0.5;
-	m_score = 0;
 }
 
 
@@ -31,7 +30,7 @@ void GSPlay::Init()
 {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_play");
-
+	m_timeleft = 20;
 	//BackGround
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
@@ -49,7 +48,7 @@ void GSPlay::Init()
 	m_Magnet->Set2DPosition(Application::screenWidth / 2, Application::screenHeight - 150);
 	m_Magnet->MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
 	m_Magnet->SetSize(60, 100);
-	
+	m_Magnet->setCurrentPoint(m_score);
 	//text game title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
@@ -122,10 +121,17 @@ void GSPlay::HandleMouseEvents(int x, int y)
 
 void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
 {
+	for (auto it : m_listButton)
+	{
+		(it)->HandleTouchEvents(x, y, bIsPressed);
+		if ((it)->IsHandle()) break;
+	}
 }
 
 void GSPlay::Update(float deltaTime)
 {
+	
+
 	if (m_Magnet->GetTimeLeft() > 0)
 		m_Magnet->Update(deltaTime);
 
@@ -138,14 +144,42 @@ void GSPlay::Update(float deltaTime)
 
 
 	//update enermies
+	int dorayaki_count = 0; 
 	for (auto dorayaki : m_listDorayaki)
 	{
 		if (dorayaki->IsActive())
 		{
-
+			dorayaki_count++;
 			dorayaki->Update(deltaTime);
 			//dorayaki->CheckCollider(m_Magnet);
 		}
+	}
+	if (dorayaki_count == 0 && m_timeleft > 1)
+	{
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
+		CreateRandomDorayaki();
+
+		SoundManager::GetInstance()->PauseSound("bground");
+	}
+	if (m_timeleft <= 1)
+	{
+		auto shader = ResourceManagers::GetInstance()->GetShader("TextShader");
+		std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
+		m_defeat = std::make_shared< Text>(shader, font, "Defeat", TEXT_COLOR::RED,3);
+		m_defeat->Set2DPosition(Vector2(Application::screenWidth / 2 - 110, 300));
+		m_listText.push_back(m_defeat);
+		auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
+		shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
+		auto texture = ResourceManagers::GetInstance()->GetTexture("button_exit");
+		button = std::make_shared<GameButton>(model, shader, texture);
+		button->Set2DPosition(Application::screenWidth / 2, 150);
+		button->SetSize(200, 50);
+		button->SetOnClick([]() {
+			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Intro);
+			SoundManager::GetInstance()->PauseSound("bground");
+			});
+		m_listButton.push_back(button);
+
 	}
 
 
@@ -169,7 +203,7 @@ void GSPlay::Update(float deltaTime)
 	m_scoreText->setText(score);
 	std::stringstream stream2;
 	stream2 << std::fixed << std::setprecision(0) << m_timeleft;
-	std::string heal = "HEAL: " + stream2.str();
+	std::string heal = "TIMELEFT: " + stream2.str();
 	m_playerTimeLeftText->setText(heal);
 }
 
@@ -186,7 +220,14 @@ void GSPlay::Draw()
 		m_Player->Draw();
 	if (m_Magnet->IsAlive())
 		m_Magnet->Draw();
-
+	for (auto it : m_listButton)
+	{
+		it->Draw();
+	}
+	for (auto it : m_listText)
+	{
+		it->Draw();
+	}
 
 
 

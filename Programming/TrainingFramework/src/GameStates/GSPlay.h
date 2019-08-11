@@ -1,6 +1,6 @@
 #pragma once
 #include "gamestatebase.h"
-
+#include "GameButton.h"
 class Player;
 class Dorayaki;
 class Magnet;
@@ -35,7 +35,11 @@ public:
 private:
 	std::shared_ptr<Sprite2D> m_BackGround;
 	std::shared_ptr<Text>  m_scoreText;
+	std::list<std::shared_ptr<GameButton>>	m_listButton;
+	std::list<std::shared_ptr<Text>>	m_listText;
+	std::shared_ptr<GameButton> button;
 	std::shared_ptr<Text>  m_playerTimeLeftText;
+	std::shared_ptr<Text>  m_defeat;
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Magnet> m_Magnet;
 	std::vector<std::shared_ptr<Dorayaki>> m_listDorayaki;

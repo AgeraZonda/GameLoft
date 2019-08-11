@@ -17,6 +17,7 @@ public:
 	int getDirection();
 	void setDirection(int angle);
 	int getCurrentPoint();
+	void setCurrentPoint(int point);
 	void CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listBullet);
 
 	void		SetColliderSize(float size);
@@ -27,8 +28,7 @@ private:
 	Vector2 m_TargetPosition;
 	int		m_TimeLeft;
 	bool	m_isAlive;
-	float	m_speedX;
-	float   m_speedY;
+	float	m_speed;
 	float	m_MaxSpeed;
 	float	m_MaxCooldown;
 	float	m_Cooldown;

@@ -9,12 +9,13 @@ Dorayaki::Dorayaki(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& sha
 	m_active = true;
 	m_MaxCooldown = 0.3;
 	m_Cooldown = 0.0;
-	m_speed = 250;
+	m_speedX = 0;
+	m_speedY = 0;
 	m_MaxSpeed = 500;
 	m_Heal = 5;
 	m_Value = 10;
 	m_Explosive = false;
-	m_SizeCollider = 20;
+	m_SizeCollider = 40;
 	m_isPull = false;
 }void Dorayaki::MoveToPossition(Vector2 pos)
 {
@@ -24,7 +25,6 @@ void Dorayaki::Follow(Vector2 vector)
 {
 	m_speedX = vector.x;
 	m_speedY = vector.y;
-	MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
 }
 Dorayaki::~Dorayaki()
 {
@@ -36,36 +36,36 @@ void Dorayaki::Update(float deltaTime)
 	if (!m_active)
 		return;
 	Vector2 pos = Get2DPosition();
-	if (pos.x < m_TargetPosition.x)
+	if (true)
 	{
 		pos.x += m_speedX * deltaTime;
-		if (pos.x > m_TargetPosition.x)
-			pos.x = m_TargetPosition.x;
+		/*if (pos.x > m_TargetPosition.x)
+			pos.x = m_TargetPosition.x;*/
 	}
 
-	if (pos.x > m_TargetPosition.x)
+	if (false)
 	{
 		pos.x -= m_speedX * deltaTime;
-		if (pos.x < m_TargetPosition.x)
-			pos.x = m_TargetPosition.x;
+		/*if (pos.x < m_TargetPosition.x)
+			pos.x = m_TargetPosition.x;*/
 	}
 
-	if (pos.y < m_TargetPosition.y)
+	if (true)
 	{
 		pos.y += m_speedY * deltaTime;
-		if (pos.y > m_TargetPosition.y)
-			pos.y = m_TargetPosition.y;
+		/*if (pos.y > m_TargetPosition.y)
+			pos.y = m_TargetPosition.y;*/
 	}
 
-	if (pos.y > m_TargetPosition.y)
+	if (false)
 	{
 		pos.y -= m_speedY * deltaTime;
-		if (pos.y < m_TargetPosition.y)
-			pos.y = m_TargetPosition.y;
+	/*	if (pos.y < m_TargetPosition.y)
+			pos.y = m_TargetPosition.y;*/
 	}
 
 	Set2DPosition(pos);
-	if (pos.y >= Application::screenHeight - 200 && m_TargetPosition.y == Application::screenHeight - 150)
+	if (pos.y >= Application::screenHeight - 200 && m_speedY > 0)
 	{
 		SoundManager::GetInstance()->PlaySound("return");
 		m_active = false;
