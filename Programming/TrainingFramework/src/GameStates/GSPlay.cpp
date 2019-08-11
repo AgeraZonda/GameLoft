@@ -171,11 +171,13 @@ void GSPlay::Update(float deltaTime)
 		m_listText.push_back(m_defeat);
 		auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 		shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
-		auto texture = ResourceManagers::GetInstance()->GetTexture("button_play");
+		auto texture = ResourceManagers::GetInstance()->GetTexture("button_restart");
 		button = std::make_shared<GameButton>(model, shader, texture);
 		button->Set2DPosition(Application::screenWidth / 2, 150);
 		button->SetSize(200, 50);
 		button->SetOnClick([]() {
+			m_score = 0;
+			current_level = 4;
 			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 			SoundManager::GetInstance()->PauseSound("bground");
 			});

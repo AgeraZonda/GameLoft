@@ -16,9 +16,9 @@ C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\G
 C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(50,61): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
 C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(170,64): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
 C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(176,50): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(185,55): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(265,10): warning C4244:  '=': conversion from 'int' to 'GLfloat', possible loss of data
-C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(266,10): warning C4244:  '=': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(187,55): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(267,10): warning C4244:  '=': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\Quy Co\Desktop\Programming\GameLoft\Programming\TrainingFramework\src\GameStates\GSPlay.cpp(268,10): warning C4244:  '=': conversion from 'int' to 'GLfloat', possible loss of data
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:  'argument': conversion from '_Ty' to 'float', possible loss of data
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:         with
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:         [
