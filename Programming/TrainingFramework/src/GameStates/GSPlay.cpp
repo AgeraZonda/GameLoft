@@ -13,7 +13,8 @@
 #include "ExplosiveEffect.h"
 
 int GSPlay::m_score = 0;
-float GSPlay::m_timeleft = 20;
+float GSPlay::m_timeleft = 30;
+int GSPlay::current_level = 4;
 GSPlay::GSPlay()
 {
 	//m_SpawnCooldown = 0.5;
@@ -30,7 +31,7 @@ void GSPlay::Init()
 {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_play");
-	m_timeleft = 20;
+	m_timeleft = 5 + current_level* 5;
 	//BackGround
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
@@ -64,11 +65,11 @@ void GSPlay::Init()
 	std::shared_ptr<ExplosiveEffect> exp = std::make_shared<ExplosiveEffect>(model, shader, texture, Vector2(960, 768), Vector2(192, 192), 0, 19, 0.7);
 	exp->SetSize(100, 100);
 	exp->SetActive(false);
-
-	CreateRandomDorayaki();
-	CreateRandomDorayaki();
-	CreateRandomDorayaki();
-	CreateRandomDorayaki();
+	for (int i = 0; i < current_level; i++)
+	{
+		CreateRandomDorayaki();
+	}
+	
 
 
 	//m_listExplosiveEffect.push_back(exp);
@@ -156,8 +157,8 @@ void GSPlay::Update(float deltaTime)
 	}
 	if (dorayaki_count == 0 && m_timeleft > 1)
 	{
+		current_level++;
 		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
-		CreateRandomDorayaki();
 
 		SoundManager::GetInstance()->PauseSound("bground");
 	}
@@ -166,19 +167,27 @@ void GSPlay::Update(float deltaTime)
 		auto shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 		std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
 		m_defeat = std::make_shared< Text>(shader, font, "Defeat", TEXT_COLOR::RED,3);
-		m_defeat->Set2DPosition(Vector2(Application::screenWidth / 2 - 110, 300));
+		m_defeat->Set2DPosition(Vector2(Application::screenWidth / 2 - 110, 400));
 		m_listText.push_back(m_defeat);
 		auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 		shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
-		auto texture = ResourceManagers::GetInstance()->GetTexture("button_exit");
+		auto texture = ResourceManagers::GetInstance()->GetTexture("button_play");
 		button = std::make_shared<GameButton>(model, shader, texture);
 		button->Set2DPosition(Application::screenWidth / 2, 150);
 		button->SetSize(200, 50);
 		button->SetOnClick([]() {
-			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Intro);
+			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 			SoundManager::GetInstance()->PauseSound("bground");
 			});
 		m_listButton.push_back(button);
+		texture = ResourceManagers::GetInstance()->GetTexture("button_exit");
+		button_exit = std::make_shared<GameButton>(model, shader, texture);
+		button_exit->Set2DPosition(Application::screenWidth / 2, 250);
+		button_exit->SetSize(200, 50);
+		button_exit->SetOnClick([]() {
+			exit(0);
+			});
+		m_listButton.push_back(button_exit);
 
 	}
 
@@ -247,10 +256,10 @@ void GSPlay::Draw()
 void GSPlay::CreateRandomDorayaki()
 {
 
-	int rangeX = Application::screenWidth - 10 + 1;
+	int rangeX = Application::screenWidth - 30;
 	int rangeY = 300;
 	int numX = rand() % rangeX + 10;
-	int numY = rand() % rangeY + 10;
+	int numY = rand() % rangeY +10;
 
 	Vector2 pos;
 	pos.x = numX;
@@ -271,7 +280,7 @@ void GSPlay::CreateRandomDorayaki()
 
 	std::shared_ptr<Dorayaki> dorayaki = std::make_shared<Dorayaki>(model, shader, texture);
 	dorayaki->Set2DPosition(pos);
-	dorayaki->SetSize(120, 120);
+	dorayaki->SetSize(100, 100);
 	dorayaki->SetRotation(180);
 	dorayaki->MoveToPossition(pos);
 	m_listDorayaki.push_back(dorayaki);

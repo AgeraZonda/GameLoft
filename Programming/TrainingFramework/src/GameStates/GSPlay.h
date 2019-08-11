@@ -31,23 +31,26 @@ public:
 	
 	static int m_score;
 	static float m_timeleft;
-	static int current_state;
+	static int current_level;
 private:
 	std::shared_ptr<Sprite2D> m_BackGround;
 	std::shared_ptr<Text>  m_scoreText;
 	std::list<std::shared_ptr<GameButton>>	m_listButton;
 	std::list<std::shared_ptr<Text>>	m_listText;
-	std::shared_ptr<GameButton> button;
+	std::shared_ptr<GameButton> button; 
+	std::shared_ptr<GameButton> button_exit;
+
+
 	std::shared_ptr<Text>  m_playerTimeLeftText;
 	std::shared_ptr<Text>  m_defeat;
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Magnet> m_Magnet;
 	std::vector<std::shared_ptr<Dorayaki>> m_listDorayaki;
 	std::vector<std::shared_ptr<Enermy>> m_listEnemy;
-	//std::vector<std::shared_ptr<ExplosiveEffect>> m_listExplosiveEffect;
+	std::vector<std::shared_ptr<ExplosiveEffect>> m_listExplosiveEffect;
 
 	//float m_SpawnCooldown;
 	void CreateRandomDorayaki();
-	//void SpawnExplosive(Vector2 pos);
+	void SpawnExplosive(Vector2 pos);
 };
 
