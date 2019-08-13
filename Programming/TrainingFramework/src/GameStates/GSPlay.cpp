@@ -11,13 +11,15 @@
 #include "Player.h"
 #include "Magnet.h"
 #include "ExplosiveEffect.h"
-
+#include "GameManager/FileManager.cpp"
 int GSPlay::m_score = 0;
 float GSPlay::m_timeleft = 30;
 int GSPlay::current_level = 4;
+int isDefeat;
 GSPlay::GSPlay()
 {
 	//m_SpawnCooldown = 0.5;
+	isDefeat = false;
 }
 
 
@@ -53,18 +55,19 @@ void GSPlay::Init()
 	//text game title
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-	m_scoreText = std::make_shared< Text>(shader, font, "SCORE: ", TEXT_COLOR::RED, 1.0);
+	m_scoreText = std::make_shared< Text>(shader, font, "SCORE: ", TEXT_COLOR::WHILE, 1.0);
 	m_scoreText->Set2DPosition(Vector2(5, 25));
-	m_playerTimeLeftText = std::make_shared< Text>(shader, font, "TIMELEFT: ", TEXT_COLOR::RED, 1.0);
+	m_playerTimeLeftText = std::make_shared< Text>(shader, font, "TIMELEFT: ", TEXT_COLOR::WHILE, 1.0);
 	m_playerTimeLeftText->Set2DPosition(Vector2(5, 50));
 
-	//init effect
 	model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
-	texture = ResourceManagers::GetInstance()->GetTexture("explosive");
+	texture = ResourceManagers::GetInstance()->GetTexture("dora_blink");
 	shader = ResourceManagers::GetInstance()->GetShader("SpriteShader");
-	std::shared_ptr<ExplosiveEffect> exp = std::make_shared<ExplosiveEffect>(model, shader, texture, Vector2(960, 768), Vector2(192, 192), 0, 19, 0.7);
-	exp->SetSize(100, 100);
+	std::shared_ptr<ExplosiveEffect> exp = std::make_shared<ExplosiveEffect>(model, shader, texture, Vector2(960, 768), Vector2(192, 192), 0, 7, 0.7);
+	exp->SetSize(-75, 75);
 	exp->SetActive(false);
+	m_listExplosiveEffect.push_back(exp);
+
 	for (int i = 0; i < current_level; i++)
 	{
 		CreateRandomDorayaki();
@@ -72,15 +75,12 @@ void GSPlay::Init()
 	
 
 
-	//m_listExplosiveEffect.push_back(exp);
+	
 
 	//init sound
 	SoundManager::GetInstance()->AddSound("colide");
-	//SoundManager::GetInstance()->AddSound("explosive_2");
-	//SoundManager::GetInstance()->AddSound("bground");
 	SoundManager::GetInstance()->AddSound("return");
-	//SoundManager::GetInstance()->AddSound("fire_enemy");
-	SoundManager::GetInstance()->PlaySound("bground");
+    if(current_level==4)SoundManager::GetInstance()->PlaySound("bground");
 
 }
 
@@ -110,7 +110,8 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
 	if (key == 32 && bIsPressed == true)
 	{
-		m_Magnet->Grab();
+		if(m_Magnet->isPull() == false)
+			m_Magnet->Grab();
 	}
 }
 
@@ -132,49 +133,57 @@ void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
 void GSPlay::Update(float deltaTime)
 {
 	
-
-	if (m_Magnet->GetTimeLeft() > 0)
-		m_Magnet->Update(deltaTime);
-
+	if (isDefeat) return;  // defeat k the choi dc
+	m_Magnet->Update(deltaTime);
 	m_Magnet->CheckCollider(m_listDorayaki);
-
-	
-
-
-
-
-
 	//update enermies
 	int dorayaki_count = 0; 
 	for (auto dorayaki : m_listDorayaki)
 	{
 		if (dorayaki->IsActive())
 		{
+			if (dorayaki->IsExplosive())
+			{
+				dorayaki->SetActive(false);
+				SpawnExplosive(dorayaki->Get2DPosition());
+			}
 			dorayaki_count++;
 			dorayaki->Update(deltaTime);
-			//dorayaki->CheckCollider(m_Magnet);
+			
 		}
 	}
-	if (dorayaki_count == 0 && m_timeleft > 1)
+		for (auto exp : m_listExplosiveEffect)
+	{
+		if (exp->IsActive())
+		{
+			exp->Update(deltaTime);
+		}
+	}
+	if (dorayaki_count == 0 && m_timeleft > 1) // tang man choi
 	{
 		current_level++;
 		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
-
-		SoundManager::GetInstance()->PauseSound("bground");
 	}
-	if (m_timeleft <= 1)
+	if (m_timeleft <= 1)	//thua
 	{
-		auto shader = ResourceManagers::GetInstance()->GetShader("TextShader");
-		std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-		m_defeat = std::make_shared< Text>(shader, font, "Defeat", TEXT_COLOR::RED,3);
-		m_defeat->Set2DPosition(Vector2(Application::screenWidth / 2 - 110, 400));
-		m_listText.push_back(m_defeat);
+		writeScore(m_score);
+		isDefeat = true;
+
 		auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
+		auto texture = ResourceManagers::GetInstance()->GetTexture("defeat");
+		m_timeleft = 5 + current_level * 5;
+		//BackGround
+		auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
+		m_defeat = std::make_shared<Sprite2D>(model, shader, texture);
+		m_defeat->Set2DPosition(Application::screenWidth / 2, Application::screenHeight / 2);
+		m_defeat->SetSize(Application::screenWidth, Application::screenHeight);
+
+		model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 		shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
-		auto texture = ResourceManagers::GetInstance()->GetTexture("button_restart");
+		texture = ResourceManagers::GetInstance()->GetTexture("button_restart");
 		button = std::make_shared<GameButton>(model, shader, texture);
-		button->Set2DPosition(Application::screenWidth / 2, 150);
-		button->SetSize(200, 50);
+		button->Set2DPosition(100, 270);
+		button->SetSize(160, 40);
 		button->SetOnClick([]() {
 			m_score = 0;
 			current_level = 4;
@@ -182,31 +191,22 @@ void GSPlay::Update(float deltaTime)
 			SoundManager::GetInstance()->PauseSound("bground");
 			});
 		m_listButton.push_back(button);
-		texture = ResourceManagers::GetInstance()->GetTexture("button_exit");
+		texture = ResourceManagers::GetInstance()->GetTexture("button_menu");
 		button_exit = std::make_shared<GameButton>(model, shader, texture);
-		button_exit->Set2DPosition(Application::screenWidth / 2, 250);
-		button_exit->SetSize(200, 50);
+		button_exit->Set2DPosition(Application::screenWidth -100, 270);
+		button_exit->SetSize(160, 40);
 		button_exit->SetOnClick([]() {
-			exit(0);
+			m_score = 0;
+			current_level = 4;
+			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Menu);
+			SoundManager::GetInstance()->PauseSound("bground");
 			});
 		m_listButton.push_back(button_exit);
 
 	}
 
-
-	/*for (auto exp : m_listExplosiveEffect)
-	{
-		if (exp->IsActive())
-		{
-			exp->Update(deltaTime);
-		}
-	}*/
-
-	//update bullets
-
 	//update Score
 	m_timeleft -= deltaTime;
-	std::cout << (int)m_timeleft << std::endl;
 	m_score = m_Magnet->getCurrentPoint();
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(0) << m_score;
@@ -221,16 +221,25 @@ void GSPlay::Update(float deltaTime)
 void GSPlay::Draw()
 {
 	//ground
+	
 	m_BackGround->Draw();
 
 	for (auto dorayaki : m_listDorayaki)
 		if (dorayaki->IsActive())
 			dorayaki->Draw();
-
+	for (auto exp : m_listExplosiveEffect)
+	{
+		if (exp->IsActive())
+		{
+			exp->Draw();
+		}
+	}
 	if (m_Player->IsAlive())
 		m_Player->Draw();
 	if (m_Magnet->IsAlive())
 		m_Magnet->Draw();
+
+	if (isDefeat)m_defeat->Draw();
 	for (auto it : m_listButton)
 	{
 		it->Draw();
@@ -241,14 +250,7 @@ void GSPlay::Draw()
 	}
 
 
-
-	/*for (auto exp : m_listExplosiveEffect)
-	{
-		if (exp->IsActive())
-		{
-			exp->Draw();
-		}
-	}*/
+	
 
 	//UI
 	m_scoreText->Draw();
@@ -288,25 +290,24 @@ void GSPlay::CreateRandomDorayaki()
 	m_listDorayaki.push_back(dorayaki);
 }
 
+void GSPlay::SpawnExplosive(Vector2 pos)
+{
+	for (auto exp : m_listExplosiveEffect)
+	{
+		if (!exp->IsActive())
+		{
+			exp->SetActive(true);
+			exp->Set2DPosition(pos);
+			return;
+		}
+	}
 
-//void GSPlay::SpawnExplosive(Vector2 pos)
-//{
-//	for (auto exp : m_listExplosiveEffect)
-//	{
-//		if (!exp->IsActive())
-//		{
-//			exp->SetActive(true);
-//			exp->Set2DPosition(pos);
-//			return;
-//		}
-//	}
-//
-//	//animation
-//	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
-//	auto texture = ResourceManagers::GetInstance()->GetTexture("explosive");
-//	auto shader = ResourceManagers::GetInstance()->GetShader("SpriteShader");
-//	std::shared_ptr<ExplosiveEffect> exp = std::make_shared<ExplosiveEffect>(model, shader, texture, Vector2(960, 768), Vector2(192, 192), 0, 19, 0.7);
-//	exp->SetSize(100, 100);
-//	exp->Set2DPosition(pos);
-//	m_listExplosiveEffect.push_back(exp);
-//}
+	//animation
+	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("dora_blink");
+	auto shader = ResourceManagers::GetInstance()->GetShader("SpriteShader");
+	std::shared_ptr<ExplosiveEffect> exp = std::make_shared<ExplosiveEffect>(model, shader, texture, Vector2(960, 768), Vector2(192, 192), 0, 7, 0.7);
+	exp->SetSize(80, 80);
+	exp->Set2DPosition(pos);
+	m_listExplosiveEffect.push_back(exp);
+}

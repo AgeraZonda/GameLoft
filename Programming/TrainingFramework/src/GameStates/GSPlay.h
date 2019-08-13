@@ -34,6 +34,7 @@ public:
 	static int current_level;
 private:
 	std::shared_ptr<Sprite2D> m_BackGround;
+	std::shared_ptr<Sprite2D> m_defeat ;
 	std::shared_ptr<Text>  m_scoreText;
 	std::list<std::shared_ptr<GameButton>>	m_listButton;
 	std::list<std::shared_ptr<Text>>	m_listText;
@@ -42,7 +43,6 @@ private:
 
 
 	std::shared_ptr<Text>  m_playerTimeLeftText;
-	std::shared_ptr<Text>  m_defeat;
 	std::shared_ptr<Player> m_Player;
 	std::shared_ptr<Magnet> m_Magnet;
 	std::vector<std::shared_ptr<Dorayaki>> m_listDorayaki;

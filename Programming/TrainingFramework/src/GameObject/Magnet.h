@@ -19,7 +19,7 @@ public:
 	int getCurrentPoint();
 	void setCurrentPoint(int point);
 	void CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listBullet);
-
+	
 	void		SetColliderSize(float size);
 	float		GetColliderSize();
 	int			GetTimeLeft();

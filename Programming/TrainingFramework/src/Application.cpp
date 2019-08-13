@@ -5,7 +5,7 @@
 
 int Application::screenWidth = 480;
 int Application::screenHeight = 700;
-
+int Application::Music = 1;
 Application::Application()
 {
 }

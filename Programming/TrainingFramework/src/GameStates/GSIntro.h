@@ -1,6 +1,6 @@
 #pragma once
 #include "gamestatebase.h"
-
+#include "ExplosiveEffect.h"
 class GSIntro :
 	public GameStateBase
 {
@@ -20,9 +20,12 @@ public:
 	void HandleMouseEvents(int x, int y) override;
 	void Update(float deltaTime) override;
 	void Draw()override;
+	void SpawnExplosive(Vector2 pos);
 
 private:
 	std::shared_ptr<Sprite2D> m_logo;
 	float m_time;
+	std::shared_ptr<Text>  m_scoreText;
+	std::vector<std::shared_ptr<ExplosiveEffect>> m_listExplosiveEffect;
 };
 

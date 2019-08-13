@@ -50,7 +50,7 @@ GLint _tmain(GLint argc, _TCHAR* argv[])
 
 	ESContext esContext;
 	esInitContext(&esContext);
-	esCreateWindow(&esContext, "Demo Game", Application::screenWidth, Application::screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
+	esCreateWindow(&esContext, "Doraemon Empires", Application::screenWidth, Application::screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
 	if (Init(&esContext) != 0)
 		return 0;
 

@@ -15,7 +15,7 @@ Dorayaki::Dorayaki(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& sha
 	m_Heal = 5;
 	m_Value = 10;
 	m_Explosive = false;
-	m_SizeCollider = 40;
+	m_SizeCollider = 45;
 	m_isPull = false;
 }void Dorayaki::MoveToPossition(Vector2 pos)
 {
@@ -68,7 +68,8 @@ void Dorayaki::Update(float deltaTime)
 	if (pos.y >= Application::screenHeight - 200 && m_speedY > 0)
 	{
 		SoundManager::GetInstance()->PlaySound("return");
-		m_active = false;
+		Explosive();
+		
 	}
 		
 	//if (m_Heal <= 0 || m_Explosive)

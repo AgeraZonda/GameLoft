@@ -18,6 +18,7 @@ public:
 
 	static int screenWidth;
 	static int screenHeight;
+	static int Music;
 private:
 
 };

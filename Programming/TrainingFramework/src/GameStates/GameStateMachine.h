@@ -11,6 +11,8 @@ enum StateTypes
 	STATE_Intro,
 	STATE_Menu,
 	STATE_Play,
+	STATE_Credit,
+	STATE_Score,
 };
 
 class GameStateMachine : public CSingleton<GameStateMachine>
@@ -29,7 +31,7 @@ public:
 	void ChangeState(StateTypes stt);
 	void PushState(StateTypes stt);
 	void PopState();
-
+	
 	bool isRunning() { return m_running; }
 	void Quit() { m_running = false; }
 	void PerformStateChange();

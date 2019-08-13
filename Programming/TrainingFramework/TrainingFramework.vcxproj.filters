@@ -90,6 +90,15 @@
     <ClCompile Include="src\GameObject\Dorayaki.cpp">
       <Filter>src\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameStates\GSCredit.cpp">
+      <Filter>src\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameStates\GSScore.cpp">
+      <Filter>src\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameManager\FileManager.cpp">
+      <Filter>src\GameManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -175,6 +184,15 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\Dorayaki.h">
       <Filter>src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameStates\GSCredit.h">
+      <Filter>src\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameStates\GSScore.h">
+      <Filter>src\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameManager\FileManager.h">
+      <Filter>src\GameManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

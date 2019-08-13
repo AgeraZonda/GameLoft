@@ -43,7 +43,7 @@ void GameStateMachine::PushState(StateTypes stt)
 	if (!m_StatesStack.empty()) {
 		m_StatesStack.back()->Pause();
 	}
-
+	std::cout << m_StatesStack.size() << std::endl;
 	// store and init the new state
 	//states.push_back(state);
 	//states.back()->Init();
@@ -56,12 +56,14 @@ void GameStateMachine::PopState()
 	if (!m_StatesStack.empty()) {
 		m_StatesStack.back()->Exit();
 		m_StatesStack.pop_back();
+
 	}
 
 	// resume previous state
 	if (!m_StatesStack.empty()) {
 		m_StatesStack.back()->Resume();
 	}
+	std::cout << m_StatesStack.size() << std::endl;
 }
 
 void  GameStateMachine::PerformStateChange()

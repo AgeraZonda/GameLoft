@@ -2,6 +2,7 @@
 #include <math.h> 
 #include "GameManager/ResourceManagers.h"
 Vector2 oriPos;
+int isBack = false;
 Magnet::Magnet(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
@@ -59,24 +60,6 @@ void Magnet::Update(GLfloat deltatime)
 
 	if(!m_isPull)m_angle += deltatime * m_CurrentDirection;
 	this->SetRotation(m_angle);
-	
-
-
-	if (!m_isAlive)
-		return;
-
-	if (m_TimeLeft <= 0)
-	{
-		SoundManager::GetInstance()->PlaySound("explosive_2");
-		m_isAlive = false;
-		return;
-	}
-
-
-	if(m_CurrentDirection )
-	{
-
-	}
 	if (m_Cooldown > 0)
 	{
 		m_Cooldown -= deltatime;
@@ -85,57 +68,41 @@ void Magnet::Update(GLfloat deltatime)
 	Vector2 pos = Get2DPosition();
 
 
-	if ((pos.y <= 50 || pos.y > Application::screenHeight-50 || pos.x <= 50 || pos.x > Application::screenWidth-50))
+	if ((pos.y <= 20 || pos.x <= 20 || pos.x > Application::screenWidth-20))
 	{
 			MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
 			m_speed = -m_speed;
+			isBack = true;
 	}
-
-
-	
-	
-
 
 	if (true)
 	{
 		pos.x += m_speed * sin(m_angle * PI / 180) * deltatime;
-		//if (pos.x > m_TargetPosition.x)
-		//	pos.x = m_TargetPosition.x;
-	}
-
-	if (false)
-	{
-		pos.x -= m_speed * sin(m_angle * PI / 180) * deltatime;
-		//if (pos.x < m_TargetPosition.x)
-		//	pos.x = m_TargetPosition.x;
 	}
 
 	if (true)
 	{
 		pos.y += m_speed * cos(m_angle * PI / 180) * deltatime;
-		//if (pos.y > m_TargetPosition.y)
-		//	pos.y = m_TargetPosition.y;
 	}
 
-	if (false)
-	{
-		pos.y -= m_speed * cos(m_angle * PI / 180) * deltatime;
-		if (pos.y < m_TargetPosition.y)
-			pos.y = m_TargetPosition.y;
-	}
 
 	Set2DPosition(pos);
-	if (Application::screenHeight - 150 -pos.y<= 3 && m_speed == 250)
+	if (Application::screenHeight - 150 -pos.y<= 0 && m_speed == 250)
 		
 	{
 		m_isPull = false;
 		m_speed = 0;
+		isBack = false;
 	}
 }
 
 void Magnet::setCurrentPoint(int point)
 {
 	m_CurrentPoint = point;
+}
+bool Magnet::isPull()
+{
+	return m_isPull;
 }
 void Magnet::Grab()
 {
@@ -149,7 +116,8 @@ float Magnet::distance(Vector2 pos, Vector2 target)
 }
 
 void Magnet::CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listDorayaki)
-{
+{	
+	if (isBack) return;
 	Vector2 pos = Get2DPosition();
 
 
@@ -159,10 +127,10 @@ void Magnet::CheckCollider(std::vector<std::shared_ptr<Dorayaki>>& listDorayaki)
 		{
 			if (distance(pos, dorayaki->Get2DPosition()) < m_SizeCollider + dorayaki->GetColliderSize() && !dorayaki->isPull())
 			{
-				MoveToPossition(Vector2(Application::screenWidth / 2, Application::screenHeight - 150));
-				m_speed = -m_speed;
-				dorayaki->Follow(Vector2(m_speed*sin(m_angle * PI / 180),m_speed*cos(m_angle * PI / 180)));
-				m_CurrentPoint += dorayaki->GetValue();
+				
+				m_speed = fabs(m_speed);
+				dorayaki->Follow(Vector2(m_speed * sin(m_angle * PI / 180),fabs(m_speed*cos(m_angle * PI / 180))));
+				m_CurrentPoint += 10;
 				dorayaki->setIsPull(true);
 				SoundManager::GetInstance()->PlaySound("colide");
 			}
